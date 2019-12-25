@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="us">
+
+<head>
+    <!-- Required meta tags -->
+    <title>Frank's ShitMas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Frank Mancia">
+    <meta name="generator" content="ShitMas">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link href="cover.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.min.js"></script>
+    <script src="js/sketch.js"></script>
+    <script src="js/particle.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var config = {
+        apiKey: "AIzaSyAKTWdnDAX_CCGUCQHcFsh_sFKzimh2kpk",
+        authDomain: "christmas-give.firebaseapp.com",
+        databaseURL: "https://christmas-give.firebaseio.com",
+        projectId: "christmas-give",
+        storageBucket: "christmas-give.appspot.com",
+        messagingSenderId: "448777394286",
+        appId: "1:448777394286:web:ec3c1148970970c9782e7f",
+        measurementId: "G-RFQN2XQWJV"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(config);
+      firebase.database();
+
+      function writeData(user){
+        firebase.database().ref(user).set({
+          email: document.getElementById("inp").value,
+        });
+        window.location = "entered.html";
+      }
+
+      function getData()
+      {
+        var tempemail = document.getElementById("inp").value;
+        var temp = tempemail.split("@");
+        var user = temp[0].replace('.','');
+
+        firebase.database().ref('/').once('value', function(snapshot){
+          snapshot.forEach(function(childSnapshot){
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            var temp = childData['email'].split("@");
+            var save = temp[0].replace('.','');
+
+            if(user == save){
+              window.location = "silly.html";
+              return false;
+            }
+            else{
+              writeData(user);
+            }
+          });
+        });
+      }
+    </script>
+</head>
+
+<body class="text-center">
+
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">ShitMas</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link active" href="index.html">Home</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Frank's ShitMas Giveaway</h1>
+            <p class="lead">Enter your email for a chance to enter to give $20 Amazon GC
+                <br>Ends Christmas day at 5pm</p>
+            <label for="inp" class="inp lead">
+                <form name="form1" action="#">
+                    <input type="text" id="inp" placeholder="&nbsp;" name="email">
+                    <span class="label">Email</span>
+                    <span class="border"></span>
+                </form>
+            </label>
+            <br>
+            <br>
+            <button type="button" class="btn" onclick="ValidateEmail(document.form1.email)">Enter</button>
+</main>
+
+<footer class="mastfoot mt-auto ">
+  <div class="inner ">
+    <p>Check me out at IG <a href='https://instagram.com/that1kidfranky'>@that1kidfranky</a>.</p>
+  </div>
+
+</footer>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
+  <script type="text/javascript ">
+    function ValidateEmail(inputText)
+    {
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if(inputText.value.match(mailformat))
+      {
+        getData();
+        return true;
+      }
+      else
+      {
+      alert("You have entered an invalid email address! ");
+      return false;
+      }
+    }
+
+  </script>
+
+</body>
+</html>
